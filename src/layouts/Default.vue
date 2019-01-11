@@ -3,7 +3,6 @@
     <q-layout-header>
       <q-toolbar
         color="primary"
-        :glossy="$q.theme === 'mat'"
         :inverted="$q.theme === 'ios'"
       >
         <q-btn
@@ -16,8 +15,7 @@
         />
 
         <q-toolbar-title>
-          Quasar App
-          <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
+          SmoelBoek
         </q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
@@ -33,9 +31,17 @@
       >
         <q-list no-border link inset-delimiter>
           <q-list-header>Navigation</q-list-header>
+          <q-item to="/profile" v-if="user.login.uuid !== ''">
+            <q-item-side icon="person" />
+            <q-item-main sublabel="View profile">{{user.name.first + " " + user.name.last}}</q-item-main>
+          </q-item>
           <q-item to="/" exact>
             <q-item-side icon="home" />
             <q-item-main label="Home" />
+          </q-item>
+          <q-item to="/feed" exact>
+            <q-item-side icon="dashboard" />
+            <q-item-main label="Feed" />
           </q-item>
           <q-item to="/about">
             <q-item-side icon="info_outline" />
@@ -63,6 +69,31 @@
         </q-list>
       </q-list>
     </q-layout-drawer>
+    <q-layout-drawer 
+      side="right"
+      v-model="leftDrawerOpen"
+      :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null"
+    >
+      <q-list
+        no-border
+        link
+        inset-delimiter
+      >
+        <q-list no-border link inset-delimiter>
+          <q-list-header>Friends</q-list-header>
+          <q-item v-for="i in [0,1,2,3]" :key="i">
+            <q-item-side>
+              <q-item-tile avatar>
+                <img v-bind:src="user.picture.large"/>
+              </q-item-tile>
+            </q-item-side>
+            <q-item-main>
+              Steve de Vette
+            </q-item-main>
+          </q-item>
+        </q-list>
+      </q-list>
+    </q-layout-drawer>
 
     <q-page-container>
       <router-view />
@@ -80,8 +111,39 @@ export default {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
   },
+  computed: {
+    user () {
+      return this.$store.state.user;
+    }
+  },
   methods: {
-    openURL
+    openURL,
+    login: function(){
+      fetch("http://localhost:3000/user", {
+        method: "GET",
+        cache: "no-cache",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then((response) => {
+        if(response.status !== 200){
+          console.log("Error occured: " + response.status);
+          return
+        }
+
+        response.json().then((data) => {
+          console.log(data);
+          this.$store.dispatch('storeUser', data);
+          // this.$router.push("profile");
+        })
+      })
+    },
+  },
+  beforeMount(){
+    this.login()
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="../assets/logo.png">
+  <q-page class="flex">
+    <login/>
   </q-page>
 </template>
 
@@ -8,7 +8,11 @@
 </style>
 
 <script>
+import Login from "../components/Login";
 export default {
-  name: 'PageHome'
+  name: 'PageHome',
+  components: {
+    Login
+  }
 }
 </script>
