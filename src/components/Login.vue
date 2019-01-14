@@ -66,7 +66,7 @@ export default {
         response.json().then((data) => {
           console.log(data);
           this.$store.dispatch('storeUser', data);
-          this.$router.push("profile");
+          this.$router.push("feed");
         })
       })
       this.loading = !this.loading;
