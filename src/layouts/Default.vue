@@ -73,6 +73,7 @@
       side="right"
       v-model="leftDrawerOpen"
       :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null"
+      :overlay="true"
     >
       <q-list
         no-border
@@ -137,7 +138,6 @@ export default {
         response.json().then((data) => {
           console.log(data);
           this.$store.dispatch('storeUser', data);
-          // this.$router.push("profile");
         })
       })
     },

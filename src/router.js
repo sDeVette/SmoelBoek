@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import DefaultLayout from './layouts/Default.vue'
 import Home from './views/Home.vue'
+import Signup from './views/Signup.vue'
 import Profile from './views/Profile.vue'
 import Feed from './views/Feed.vue'
 import About from './views/About.vue'
@@ -19,6 +20,11 @@ export default new Router({
           path: '',
           name: 'home',
           component: Home
+        },
+        {
+          path: '/signup',
+          name: 'signup',
+          component: Signup
         },
         {
           path: '/profile',
